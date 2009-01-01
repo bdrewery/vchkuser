@@ -1,0 +1,34 @@
+========
+vchkuser
+========
+
+:Author: `Benedikt Böhm <bb@xnull.de>`_
+:Version: 0.1
+:Web: http://bb.xnull.de/projects/vchkuser/
+:Source: http://git.xnull.de/gitweb/?p=vchkuser.git
+:Download: http://bb.xnull.de/projects/vchkuser/dist/
+
+The vchkuser qmail-spp plugin checks for recipient existence with vpopmail. It
+is based on a script by Werner Maier (http://www.maiers.de/qmail/art38,71.html)
+
+
+Installation
+============
+
+to install vchkuser and the suid wrapper do the following as root:
+::
+
+  gcc -o vchkuser vchkuser.c
+  mv vchkuser vchkuser.sh /var/qmail/plugins/
+  chmod +s /var/qmail/plugins/vchkuser
+
+
+Configuration
+=============
+
+In the ``[rcpt]`` section of ``/var/qmail/control/smtpplugins`` add the following:
+::
+
+  plugins/vchkuser
+
+Edit ``/var/qmail/plugins/vchkuser.sh`` to change vpopmail's home or logging options.
