@@ -3,7 +3,7 @@ vchkuser
 ========
 
 :Author: `Benedikt Böhm <bb@xnull.de>`_
-:Version: 0.3
+:Version: 0.3.1
 :Web: http://bb.xnull.de/projects/vchkuser/
 :Source: http://git.xnull.de/gitweb/?p=vchkuser.git (also on `github <http://github.com/hollow/vchkuser>`_)
 :Download: http://bb.xnull.de/projects/vchkuser/dist/

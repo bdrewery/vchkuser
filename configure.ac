@@ -1,6 +1,6 @@
 AC_PREREQ([2.63])
-AC_INIT([vchkuser], [0.3], [bb@xnull.de])
-AM_INIT_AUTOMAKE([vchkuser], [0.3])
+AC_INIT([vchkuser], [0.3.1], [bb@xnull.de])
+AM_INIT_AUTOMAKE([vchkuser], [0.3.1])
 
 AC_CONFIG_SRCDIR([vchkuser.c])
 AC_CONFIG_HEADER([config.h])
@@ -13,26 +13,26 @@ AS_IF([test "x$enable_debug" != xno], [CFLAGS="$CFLAGS -DDEBUG"])
 
 AC_ARG_WITH(qmaildir,
 	AS_HELP_STRING([--with-qmaildir=dir],[directory where qmail is installed.]),
-	[qmaildir="$enableval"],[qmaildir="/var/qmail"])
+	[qmaildir="$withval"],[qmaildir="/var/qmail"])
 AS_IF([test ! -d "$qmaildir"],
 	AC_MSG_ERROR([Unable to find your qmail directory, specify --with-qmaildir.]))
 AC_SUBST([qmaildir])
 
 AC_ARG_WITH(vpopmaildir,
 	AS_HELP_STRING([--with-vpopmaildir=dir],[directory where qmail is installed.]),
-	[vpopmaildir="$enableval"],[vpopmaildir="/var/vpopmail"])
+	[vpopmaildir="$withval"],[vpopmaildir="/var/vpopmail"])
 AS_IF([test ! -d "$vpopmaildir"],
 	AC_MSG_ERROR([Unable to find your vpopmaildir directory, specify --with-vpopmaildir.]))
 AC_SUBST([vpopmaildir])
 
 AC_ARG_WITH(vpopuser,
 	AS_HELP_STRING([--with-vpopuser=vpopmail],[vpopmail username]),
-	[vpopuser="$enableval"],[vpopuser="vpopmail"])
+	[vpopuser="$withval"],[vpopuser="vpopmail"])
 AC_SUBST([vpopuser])
 
 AC_ARG_WITH(qmailgroup,
 	AS_HELP_STRING([--with-qmailgroup=nofiles],[qmail group]),
-	[qmailgroup="$enableval"],[qmailgroup="nofiles"])
+	[qmailgroup="$withval"],[qmailgroup="nofiles"])
 AC_SUBST([qmailgroup])
 
 # Checks for programs.
