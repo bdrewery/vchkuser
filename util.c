@@ -140,11 +140,13 @@ bool grep(const char *path, const char *pattern)
 {
 	int fd = open(path, O_RDONLY);
 	bool ret = false;
-	char *line = NULL;
+	char *line = NULL, *tmp = NULL;
 
 	while (!ret && (line = readline(fd)) != NULL) {
-		if (match(line, pattern, 0))
+		if ((tmp = match(line, pattern, 0)) != NULL) {
+			free(tmp);
 			ret = true;
+		}
 		free(line);
 	}
 
