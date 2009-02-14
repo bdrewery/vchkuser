@@ -12,6 +12,15 @@
 #include "util.h"
 #include "debug.h"
 
+char *str_dup(const char *str)
+{
+	int len = strlen(str);
+	char *dup = malloc(len + 1);
+	memcpy(dup, str, len);
+	dup[len] = '\0';
+	return dup;
+}
+
 char *vxprintf(const char *format, va_list ap)
 {
 	va_list aq;
@@ -108,13 +117,13 @@ char *match(const char *str, const char *pattern, int nmatch)
 
 	if (matched == -1) {
 		if (nmatch > 0)
-			return strdup(str);
+			return str_dup(str);
 		else
 			return NULL;
 	}
 
 	if (nmatch == 0)
-		return strdup(str);
+		return str_dup(str);
 
 	const char *buf = NULL;
 	if (pcre_get_substring(str, ovec, matched, nmatch, &buf) < 0) {
@@ -122,7 +131,7 @@ char *match(const char *str, const char *pattern, int nmatch)
 		return NULL;
 	}
 
-	return strdup(buf);
+	return str_dup(buf);
 }
 
 bool grep(const char *path, const char *pattern)

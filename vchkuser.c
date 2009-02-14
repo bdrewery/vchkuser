@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
 		nack("invalid characters in recipient name: %s", SMTPRCPTTO);
 
 	// get the domain name and extension of the recipient
-	char *ext = strdup(SMTPRCPTTO);
-	char *domain = index(ext, '@');
+	char *ext = str_dup(SMTPRCPTTO);
+	char *domain = strchr(ext, '@');
 
 	if (!domain || strlen(domain) <= 1)
 		nack("invalid empty domain name");

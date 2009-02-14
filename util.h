@@ -1,6 +1,7 @@
 #ifndef __UTIL_H
 #define __UTIL_H
 
+char *str_dup(const char *str);
 char *vxprintf(const char *format, va_list ap);
 char *xprintf(const char *format, ...);
 char *readline(int fd);
