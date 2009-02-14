@@ -1,10 +1,9 @@
-#define _GNU_SOURCE
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <errno.h>
 #include <string.h>
 #include <fcntl.h>
 #include <pcre.h>
@@ -12,6 +11,7 @@
 #include "util.h"
 #include "debug.h"
 
+/* strdup is not portable, so we need to implement it on our own */
 char *str_dup(const char *str)
 {
 	int len = strlen(str);
@@ -21,6 +21,8 @@ char *str_dup(const char *str)
 	return dup;
 }
 
+/* to make things portable, we can't use asprintf & co, so we need to implement
+ * our own wrappers */
 char *vxprintf(const char *format, va_list ap)
 {
 	va_list aq;
@@ -46,6 +48,8 @@ char *xprintf(const char *format, ...)
 
 #define CHUNKSIZE 128
 
+/* read a line from fd and dynamically allocate memory for it, return NULL when
+ * reaching EOF or in case of an error */
 char *readline(int fd)
 {
 	int chunks = 1, len = 0;
@@ -89,6 +93,7 @@ char *match(const char *str, const char *pattern, int nmatch)
 	const char *errstr = NULL;
 	int erroff = 0;
 
+	/* compile and execute the pattern expression */
 	pcre *re_bin = pcre_compile(pattern, PCRE_CASELESS,
 			&errstr, &erroff, NULL);
 	if (!re_bin) {
@@ -107,7 +112,8 @@ char *match(const char *str, const char *pattern, int nmatch)
 
 	int oveclen = (nmatch + 1) * 3;
 	int ovec[oveclen];
-	int matched = pcre_exec(re_bin, re_extra, str, strlen(str), 0, 0, ovec, oveclen);
+	int matched = pcre_exec(re_bin, re_extra, str, strlen(str), 0, 0,
+			ovec, oveclen);
 
 	debug("str: '%s', pattern: '%s', nmatch: %d, matched: %d",
 			str, pattern, nmatch, matched);
@@ -117,13 +123,19 @@ char *match(const char *str, const char *pattern, int nmatch)
 		return NULL;
 	}
 
+	/* the pattern did not match ... */
 	if (matched == -1) {
+		/* ... but we return the whole string if no substring has matched to
+		 * mimic bash parameter expansion where an unmatched pattern still
+		 * returns the whole string */
 		if (nmatch > 0)
 			return str_dup(str);
 		else
 			return NULL;
 	}
 
+	/* if there were no substrings but the pattern matched, return the whole
+	 * string */
 	if (nmatch == 0)
 		return str_dup(str);
 

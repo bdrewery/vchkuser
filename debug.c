@@ -1,4 +1,5 @@
 #ifdef DEBUG
+#include <stdarg.h>
 #include <syslog.h>
 #include "util.h"
 #endif

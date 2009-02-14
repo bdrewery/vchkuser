@@ -1,19 +1,15 @@
-#define _GNU_SOURCE
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
-#include <fcntl.h>
-#include <pcre.h>
+#include <sys/types.h>
 #include <vauth.h>
 #include <vpopmail.h>
 
 #include "debug.h"
 #include "util.h"
 
+/* reject the smtp session with a permanent error */
 void nack(const char *format, ...)
 {
 #ifdef DEBUG
@@ -26,6 +22,7 @@ void nack(const char *format, ...)
 	exit(1);
 }
 
+/* accept the smtp session without further checks */
 void ack(const char *format, ...)
 {
 #ifdef DEBUG

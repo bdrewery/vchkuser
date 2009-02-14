@@ -1,6 +1,9 @@
 #ifndef __UTIL_H
 #define __UTIL_H
 
+#include <stdarg.h>
+#include <stdbool.h>
+
 char *str_dup(const char *str);
 char *vxprintf(const char *format, va_list ap);
 char *xprintf(const char *format, ...);
