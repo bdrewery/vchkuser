@@ -50,11 +50,13 @@ char *readline(int fd)
 {
 	int chunks = 1, len = 0;
 	char *buf = malloc(chunks * CHUNKSIZE + 1);
-	char c;
 
 	while (1) {
+		char c;
 		switch(read(fd, &c, 1)) {
 		case -1:
+			if (errno == EINTR)
+				continue;
 			free(buf);
 			return NULL;
 
