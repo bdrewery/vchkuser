@@ -46,6 +46,16 @@ char *xprintf(const char *format, ...)
 	return buf;
 }
 
+bool isreadable(const char *path)
+{
+	int fd = open(path, O_RDONLY);
+	if (fd == -1)
+		return false;
+
+	close(fd);
+	return true;
+}
+
 #define CHUNKSIZE 128
 
 /* read a line from fd and dynamically allocate memory for it, return NULL when
