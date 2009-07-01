@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
 	if (strlen(ext) < 1)
 		nack("invalid empty extension");
 
+	// check relay users
+	if (getenv("RELAYCLIENT") || getenv("SMTPAUTHUSER"))
+		ack("relaying email to %s", SMTPRCPTTO);
+
 	// get domain info
 	debug("loading domain entry if available");
 	domain_entry *de = get_domain_entries(domain);
@@ -70,11 +74,7 @@ int main(int argc, char *argv[])
 			debug("failed to lookup domain entries: %s", verror(verrori));
 		}
 
-		// .. and RELAYCLIENT or SMTPAUTHUSER is set, user is allowed to relay
-		if (getenv("RELAYCLIENT") || getenv("SMTPAUTHUSER"))
-			ack("relaying email to %s", SMTPRCPTTO);
-		else
-			nack("no such domain: %s", domain);
+		nack("no such domain: %s", domain);
 	} else {
 		// ... otherwise sanitize alias domains and continue
 		domain = de->realdomain;
