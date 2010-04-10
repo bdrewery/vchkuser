@@ -140,6 +140,7 @@ int main(int argc, char *argv[])
 	list = match(list, "(.*)-accept-.*=.*\\..*", 1);
 	list = match(list, "(.*)-allow-tc\\..*=.*\\..*", 1);
 	list = match(list, "(.*)-reject-.*=.*\\..*", 1);
+	list = match(list, "(.*)-return-.*=.*\\..*", 1);
 	list = match(list, "(.*)-deny-.*=.*\\..*", 1);
 	list = match(list, "(.*)-sc\\..*=.*\\..*", 1);
 	list = match(list, "(.*)-tc\\..*=.*\\..*", 1);
