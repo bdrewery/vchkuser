@@ -5,7 +5,7 @@ vchkuser
 :Author: `Benedikt Böhm <bb@xnull.de>`_
 :Version: 0.3.3
 :Web: http://bb.xnull.de/projects/vchkuser/
-:Source: http://git.xnull.de/gitweb/?p=vchkuser.git (also on `github <http://github.com/hollow/vchkuser>`_)
+:Source: http://git.xnull.de/cgit/vchkuser/ (also on `github <http://github.com/hollow/vchkuser>`_)
 :Download: http://bb.xnull.de/projects/vchkuser/dist/
 
 The vchkuser qmail-spp plugin checks for recipient existence with vpopmail. It
