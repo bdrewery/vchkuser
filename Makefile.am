@@ -8,5 +8,5 @@ vchkuser_CPPFLAGS = $(AM_CPPFLAGS) @VPOPMAIL_INCLUDES@
 vchkuser_LDADD = $(LIBS) @VPOPMAIL_LIBS@
 
 install-exec-hook:
-	chmod 4750 $(DESTDIR)$(sppexecdir)/vchkuser
 	chown $(vpopuser):$(qmailgroup) $(DESTDIR)$(sppexecdir)/vchkuser
+	chmod 4750 $(DESTDIR)$(sppexecdir)/vchkuser

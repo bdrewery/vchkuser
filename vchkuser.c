@@ -99,6 +99,22 @@ int main(int argc, char *argv[])
 		ack("%s exists (.qmail-%s)", SMTPRCPTTO, ext);
 	free(dotqmail);
 
+	// check dotqmail -default patterns
+	char *p, *ext2 = str_dup(ext);
+
+	do {
+		if ((p = strrchr(ext2, '-')) == NULL)
+			break;
+
+		*p = '\0';
+
+		char *dotdefault = xprintf("%s/.qmail-%s-default", de->path, ext2);
+		debug("checking '%s' access", dotdefault);
+		if (isreadable(dotdefault))
+			ack("%s exists (.qmail-%s-default)", SMTPRCPTTO, ext2);
+		free(dotdefault);
+	} while (true);
+
 	// if a .qmail-default file exists, delivery is possible
 	// catchall is very bad, but possible
 	char *dotdefault = xprintf("%s/.qmail-default", de->path);
@@ -109,51 +125,6 @@ int main(int argc, char *argv[])
 			ack("%s exists (.qmail-default)", SMTPRCPTTO);
 	}
 	free(dotdefault);
-
-	// checks for ezmlm-list
-	// XXX: all this seems very incomplete
-	debug("checking for ezmlm list patterns");
-	char *list = match(ext, "(.*)-[^\\-]*$", 1);
-	list = match(list, "(.*)-accept$", 1);
-	list = match(list, "(.*)-reject$", 1);
-
-	if (strcmp(list, ext) != 0) {
-		// if a .qmail-list-default file exists, delivery is possible
-		char *dotezmlm = xprintf("%s/.qmail-%s-default", de->path, list);
-		debug("checking '%s' access", dotezmlm);
-		if (isreadable(dotezmlm))
-			ack("%s exists (.qmail-%s-default)", SMTPRCPTTO, list);
-		free(dotezmlm);
-
-		// no ezmlm-list. now check .qmail-ext
-		char *listext = match(ext, ".*-([^\\-]*)$", 1);
-		char *dotezmlmext = xprintf("%s/%s/.qmail-%s", de->path, list, listext);
-		debug("checking '%s' access", dotezmlmext);
-		if (isreadable(dotezmlmext))
-			ack("%s exists (%s/.qmail-%s)", list, listext);
-	}
-
-	// special: ezmlm-list with listname-subscribe-email-or-more=domain.tld@domain.tld
-	debug("checking extended ezmlm list patterns");
-	list = match(ext, "(.*)-subscribe-.*=.*\\..*", 1);
-	list = match(list, "(.*)-unsubscribe-.*=.*\\..*", 1);
-	list = match(list, "(.*)-accept-.*=.*\\..*", 1);
-	list = match(list, "(.*)-allow-tc\\..*=.*\\..*", 1);
-	list = match(list, "(.*)-reject-.*=.*\\..*", 1);
-	list = match(list, "(.*)-return-.*=.*\\..*", 1);
-	list = match(list, "(.*)-deny-.*=.*\\..*", 1);
-	list = match(list, "(.*)-sc\\..*=.*\\..*", 1);
-	list = match(list, "(.*)-tc\\..*=.*\\..*", 1);
-	list = match(list, "(.*)-uc\\..*=.*\\..*", 1);
-	list = match(list, "(.*)-vc\\..*=.*\\..*", 1);
-
-	if (strcmp(list, ext) != 0) {
-		char *dotezmlm = xprintf("%s/.qmail-%s-default", de->path, list);
-		debug("checking '%s' access", dotezmlm);
-		if (isreadable(dotezmlm))
-			ack("%s exists (.qmail-%s-default)", SMTPRCPTTO, list);
-		free(dotezmlm);
-	}
 
 	nack("no such recipient: %s", SMTPRCPTTO);
 }
