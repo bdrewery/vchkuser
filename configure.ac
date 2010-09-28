@@ -1,6 +1,6 @@
 AC_PREREQ([2.63])
-AC_INIT([vchkuser], [0.3.2], [bb@xnull.de])
-AM_INIT_AUTOMAKE([vchkuser], [0.3.2])
+AC_INIT([vchkuser], [0.4], [bb@xnull.de])
+AM_INIT_AUTOMAKE([vchkuser], [0.4])
 
 AC_CONFIG_SRCDIR([vchkuser.c])
 AC_CONFIG_HEADER([config.h])
